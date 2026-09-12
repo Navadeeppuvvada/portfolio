@@ -146,13 +146,81 @@
   .section-title{font-size:2.1rem; font-weight:800; margin-bottom:40px;}
 
   /* ABOUT */
-  .about-grid{display:grid; grid-template-columns:1fr 1fr; gap:50px;}
-  .about-grid p{color:var(--muted); margin-bottom:16px; font-size:1.02rem;}
-  .about-grid p strong{color:var(--text); font-weight:600;}
-  .fact-list{display:flex; flex-direction:column; gap:0;}
-  .fact{display:flex; justify-content:space-between; padding:15px 0; border-bottom:1px solid var(--line); font-size:0.95rem;}
-  .fact span:first-child{color:var(--muted);}
-  .fact span:last-child{font-weight:600;}
+  .about-intro{max-width:640px; margin-bottom:40px;}
+  .about-intro p{color:var(--muted); margin-bottom:16px; font-size:1.02rem;}
+  .about-intro p strong{color:var(--text); font-weight:600;}
+
+  /* FLIP CARDS */
+  .flip-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:44px;}
+  .flip-card{perspective:1000px; height:130px; cursor:pointer;}
+  .flip-inner{
+    position:relative; width:100%; height:100%; text-align:left;
+    transform-style:preserve-3d; transition:transform .6s cubic-bezier(.4,.2,.2,1);
+  }
+  .flip-card.flipped .flip-inner, .flip-card:hover .flip-inner{transform:rotateY(180deg);}
+  .flip-face{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:14px;
+    border:1px solid var(--line); padding:18px; display:flex; flex-direction:column; justify-content:center;
+    background:var(--surface);
+  }
+  .flip-front .f-label{font-size:0.78rem; color:var(--muted); margin-bottom:8px;}
+  .flip-front .f-icon{font-size:1.4rem; margin-bottom:8px;}
+  .flip-front .f-value{font-size:1.05rem; font-weight:700; font-family:'Sora',sans-serif;}
+  .flip-back{
+    transform:rotateY(180deg); background:linear-gradient(140deg, var(--accent), var(--accent2));
+    color:#0A0A0F; justify-content:center;
+  }
+  .flip-back p{font-size:0.86rem; font-weight:600; line-height:1.4;}
+  .flip-hint{font-size:0.72rem; color:var(--muted); margin-top:-30px; margin-bottom:40px;}
+
+  /* YEAR JOURNEY */
+  .journey{margin-top:10px;}
+  .journey-label{font-size:0.85rem; color:var(--muted); margin-bottom:22px;}
+  .journey-track{display:flex; align-items:center;}
+  .journey-step{
+    display:flex; flex-direction:column; align-items:center; position:relative; flex:1;
+  }
+  .journey-dot{
+    width:18px; height:18px; border-radius:50%; border:2px solid var(--line); background:var(--bg);
+    z-index:2; transition:all .4s;
+  }
+  .journey-step.done .journey-dot{background:var(--accent2); border-color:var(--accent2);}
+  .journey-step.current .journey-dot{
+    background:var(--accent); border-color:var(--accent); width:22px; height:22px;
+    box-shadow:0 0 0 5px rgba(139,108,255,0.2);
+  }
+  .journey-line{position:absolute; top:9px; left:50%; width:100%; height:2px; background:var(--line); z-index:1;}
+  .journey-step.done .journey-line{background:var(--accent2);}
+  .journey-step:last-child .journey-line{display:none;}
+  .journey-yr{font-size:0.8rem; color:var(--muted); margin-top:12px;}
+  .journey-step.current .journey-yr{color:var(--text); font-weight:600;}
+
+  /* SKILL TABS */
+  .tab-buttons{display:flex; gap:4px; position:relative; margin-bottom:24px; border-bottom:1px solid var(--line);}
+  .tab-btn{
+    background:none; border:none; color:var(--muted); font-family:'Inter',sans-serif; font-size:0.92rem;
+    font-weight:500; padding:12px 4px; margin-right:26px; cursor:pointer; transition:color .25s;
+  }
+  .tab-btn:hover{color:var(--text);}
+  .tab-btn.active{color:var(--text);}
+  .tab-indicator{position:absolute; bottom:-1px; height:2px; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:left .3s ease, width .3s ease;}
+  .tab-panel{display:none;}
+  .tab-panel.active{display:block; animation:fadeIn .35s ease;}
+  @keyframes fadeIn{from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);}}
+
+  /* CERT ACCORDION */
+  .cert-acc-item{border-bottom:1px solid var(--line);}
+  .cert-acc-item:first-child{border-top:1px solid var(--line);}
+  .cert-acc-header{
+    width:100%; background:none; border:none; color:var(--text); text-align:left; cursor:pointer;
+    display:flex; justify-content:space-between; align-items:center; padding:20px 0; font-family:'Inter',sans-serif;
+  }
+  .cert-acc-header .c-title{font-weight:500; font-size:1rem;}
+  .cert-acc-header.placeholder .c-title{color:var(--muted); font-style:italic; font-weight:400;}
+  .c-chevron{transition:transform .3s; color:var(--accent2); font-size:1rem;}
+  .cert-acc-item.open .c-chevron{transform:rotate(180deg);}
+  .cert-acc-body{max-height:0; overflow:hidden; transition:max-height .35s ease;}
+  .cert-acc-body p{color:var(--muted); font-size:0.9rem; padding-bottom:20px; max-width:520px;}
 
   /* SKILLS */
   .skill-cat{margin-bottom:30px;}
@@ -224,8 +292,11 @@
     .hero h1{font-size:2.4rem;}
     .photo-stage{order:-1; margin-bottom:20px;}
     .photo-card{width:210px; height:210px;}
-    .about-grid, .project-grid{grid-template-columns:1fr;}
+    .project-grid{grid-template-columns:1fr;}
     .profile-grid{grid-template-columns:1fr 1fr;}
+    .flip-grid{grid-template-columns:1fr 1fr;}
+    .journey-yr{font-size:0.7rem;}
+    .tab-btn{margin-right:16px; font-size:0.85rem;}
     .navlinks{display:none;}
     .contact-grid{grid-template-columns:1fr;}
     .contact-box{padding:34px;}
@@ -268,7 +339,7 @@
     <div>
       <div class="eyebrow"><span class="pulse"></span> Available for internships</div>
       <h1>2nd year CSE,<br>building things that<br><span class="grad">actually work.</span></h1>
-      <p class="lead">I'm Navadeep — a Computer Science student at KL University learning to turn ideas into real software, one project and one problem at a time.</p>
+      <p class="lead">CSE student at KL University, turning ideas into real software.</p>
       <div class="hero-cta">
         <a class="btn btn-primary magnetic" href="#projects">View projects</a>
         <a class="btn btn-ghost magnetic" href="#contact">Get in touch</a>
@@ -297,17 +368,34 @@
     <div class="reveal">
       <div class="section-label">01 — About</div>
       <h2 class="section-title">A bit about me</h2>
-      <div class="about-grid">
-        <div>
-          <p>I'm currently in my <strong>second year of B.Tech in Computer Science at KL University</strong>, building a solid foundation in programming, problem-solving, and software development.</p>
-          <p>I practice regularly on <strong>LeetCode</strong> and <strong>GeeksforGeeks</strong>, and I'm working on turning what I learn in class into projects I can actually show off. This page updates as I build more.</p>
-        </div>
-        <div class="fact-list">
-          <div class="fact"><span>College</span><span>KL University</span></div>
-          <div class="fact"><span>Branch</span><span>B.Tech, CSE</span></div>
-          <div class="fact"><span>Year</span><span>2nd Year</span></div>
-          <div class="fact"><span>Based in</span><span>India</span></div>
-          <div class="fact"><span>Focus</span><span>DSA · Web Dev · Problem Solving</span></div>
+      <div class="about-intro">
+        <p>I'm currently in my <strong>second year of B.Tech in Computer Science at KL University</strong>, building a solid foundation in programming, problem-solving, and software development.</p>
+        <p>I practice regularly on <strong>LeetCode</strong> and <strong>GeeksforGeeks</strong>, and I'm working on turning what I learn in class into projects I can actually show off. This page updates as I build more.</p>
+      </div>
+
+      <div class="journey">
+        <div class="journey-label">Degree progress</div>
+        <div class="journey-track">
+          <div class="journey-step done">
+            <div class="journey-line"></div>
+            <div class="journey-dot"></div>
+            <div class="journey-yr">Year 1</div>
+          </div>
+          <div class="journey-step current">
+            <div class="journey-line"></div>
+            <div class="journey-dot"></div>
+            <div class="journey-yr">Year 2</div>
+          </div>
+          <div class="journey-step">
+            <div class="journey-line"></div>
+            <div class="journey-dot"></div>
+            <div class="journey-yr">Year 3</div>
+          </div>
+          <div class="journey-step">
+            <div class="journey-line"></div>
+            <div class="journey-dot"></div>
+            <div class="journey-yr">Year 4</div>
+          </div>
         </div>
       </div>
     </div>
@@ -318,17 +406,22 @@
     <div class="reveal">
       <div class="section-label">02 — Skills</div>
       <h2 class="section-title">What I work with</h2>
-      <div class="skill-cat">
-        <h3>Languages</h3>
-        <div class="chip-row"><span class="chip empty">Add your languages — e.g. C, Java, Python</span></div>
+      <div class="tab-buttons" id="skillTabs">
+        <button class="tab-btn active" data-tab="lang">Languages</button>
+        <button class="tab-btn" data-tab="tools">Web & Tools</button>
+        <button class="tab-btn" data-tab="concepts">Core Concepts</button>
+        <div class="tab-indicator" id="tabIndicator"></div>
       </div>
-      <div class="skill-cat">
-        <h3>Web & Tools</h3>
-        <div class="chip-row"><span class="chip empty">Add your tools — e.g. HTML, CSS, Git, VS Code</span></div>
-      </div>
-      <div class="skill-cat">
-        <h3>Core Concepts</h3>
-        <div class="chip-row"><span class="chip empty">Add concepts — e.g. DSA, OOP, DBMS</span></div>
+      <div class="tab-panels">
+        <div class="tab-panel active" data-panel="lang">
+          <div class="chip-row"><span class="chip">C</span><span class="chip">Java</span><span class="chip">Python</span></div>
+        </div>
+        <div class="tab-panel" data-panel="tools">
+          <div class="chip-row"><span class="chip">HTML</span><span class="chip">CSS</span><span class="chip">JavaScript</span><span class="chip">React</span></div>
+        </div>
+        <div class="tab-panel" data-panel="concepts">
+          <div class="chip-row"><span class="chip">Operating Systems</span><span class="chip">DBMS</span><span class="chip">Computer Networks</span></div>
+        </div>
       </div>
     </div>
   </section>
@@ -339,13 +432,15 @@
       <div class="section-label">03 — Projects</div>
       <h2 class="section-title">Selected work</h2>
       <div class="project-grid">
-        <div class="project-card placeholder tiltcard">
-          <div class="plus">+</div>
-          <p>Send me your project details — name, short description, and tech used — and this card becomes real.</p>
+        <div class="project-card tiltcard">
+          <h3>Smart College Management System</h3>
+          <p>Built as a final year project submission — a system to manage college operations end to end.</p>
+          <div class="project-tags"><span>Node.js</span><span>React</span></div>
         </div>
-        <div class="project-card placeholder tiltcard">
-          <div class="plus">+</div>
-          <p>A second slot, ready to go. Even a small academic or mini project fits well here.</p>
+        <div class="project-card tiltcard">
+          <h3>IQ Arena</h3>
+          <p>A quiz game built to test and sharpen general knowledge and reasoning, one question at a time.</p>
+          <div class="project-tags"><span>Quiz Game</span></div>
         </div>
       </div>
     </div>
@@ -378,9 +473,21 @@
     <div class="reveal">
       <div class="section-label">05 — Certifications</div>
       <h2 class="section-title">Courses & certifications</h2>
-      <div class="cert-list">
-        <div class="cert-item placeholder"><span class="c-title">Add a certification — course name and issuer</span><span class="c-meta">YYYY</span></div>
-        <div class="cert-item placeholder"><span class="c-title">Add another one here</span><span class="c-meta">YYYY</span></div>
+      <div class="cert-accordion" id="certAccordion">
+        <div class="cert-acc-item">
+          <button class="cert-acc-header placeholder">
+            <span class="c-title">Add a certification — course name and issuer</span>
+            <span class="c-chevron">⌄</span>
+          </button>
+          <div class="cert-acc-body"><p>Click to expand. Add what you learned, the completion date, and a link to the credential if you have one.</p></div>
+        </div>
+        <div class="cert-acc-item">
+          <button class="cert-acc-header placeholder">
+            <span class="c-title">Add another one here</span>
+            <span class="c-chevron">⌄</span>
+          </button>
+          <div class="cert-acc-body"><p>A second slot, ready for your next certification.</p></div>
+        </div>
       </div>
     </div>
   </section>
@@ -452,6 +559,50 @@ document.querySelectorAll('.magnetic').forEach(btn => {
     btn.style.transform = `translate(${x*0.25}px, ${y*0.4}px)`;
   });
   btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0,0)'; });
+});
+
+// flip cards - click toggle (works alongside CSS hover on desktop)
+document.querySelectorAll('.flip-card').forEach(card => {
+  card.addEventListener('click', () => card.classList.toggle('flipped'));
+});
+
+// skill tabs
+const tabBtns = document.querySelectorAll('#skillTabs .tab-btn');
+const tabIndicator = document.getElementById('tabIndicator');
+const tabPanels = document.querySelectorAll('.tab-panel');
+function moveIndicator(btn){
+  tabIndicator.style.left = btn.offsetLeft + 'px';
+  tabIndicator.style.width = btn.offsetWidth + 'px';
+}
+if(tabBtns.length){
+  moveIndicator(document.querySelector('#skillTabs .tab-btn.active'));
+  window.addEventListener('resize', () => moveIndicator(document.querySelector('#skillTabs .tab-btn.active')));
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      tabBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      moveIndicator(btn);
+      const target = btn.getAttribute('data-tab');
+      tabPanels.forEach(p => p.classList.toggle('active', p.getAttribute('data-panel') === target));
+    });
+  });
+}
+
+// certifications accordion
+document.querySelectorAll('.cert-acc-item').forEach(item => {
+  const header = item.querySelector('.cert-acc-header');
+  const body = item.querySelector('.cert-acc-body');
+  header.addEventListener('click', () => {
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.cert-acc-item').forEach(i => {
+      i.classList.remove('open');
+      i.querySelector('.cert-acc-body').style.maxHeight = null;
+    });
+    if(!isOpen){
+      item.classList.add('open');
+      body.style.maxHeight = body.scrollHeight + 'px';
+    }
+  });
 });
 
 // project card glow follow
